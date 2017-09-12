@@ -9,14 +9,14 @@ import Page from "./components/Page";
 import User from "./components/User";
 import * as pageActions from './actions/PageActions'
 import {bindActionCreators} from "redux";
+
 class App extends Component {
     render() {
         const {
             user,
             page
         } = this.props;
-        const setYear = this.props.pageActions;
-        console.log(this.props.user);
+        const {getPhotos} = this.props.pageActions;
         return (
             <div className="App">
                 <Header
@@ -25,7 +25,7 @@ class App extends Component {
                 />
                 {this.props.children}
                 <User id={user.id} name={user.name}/>
-                <Page setYear={setYear} year={page.year} photos={page.photos}/>
+                <Page getPhotos={getPhotos} year={page.year} photos={page.photos}/>
                 <Footer/>
             </div>
         );

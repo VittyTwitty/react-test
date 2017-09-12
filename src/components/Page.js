@@ -1,29 +1,32 @@
 import React, {PropTypes, Component} from 'react';
 
 export default class Page extends Component {
-    constructor() {
-        super();
-        this.props.setYear = ::this.props.setYear;
 
-    }
     onYearBtnClick(e) {
-        this.props.setYear(+e.target.textContent);
-        console.log(this.props.setYear)
+        console.log(this.props);
+        this.props.getPhotos(+e.target.textContent);
     }
 
     render() {
         const {
             year,
-            photos
+            photos,
+            fetching
         } = this.props;
         return (
             <div>
                 <p>
-                    <button onClick={this.onYearBtnClick.bind(this)}>2016</button>
-                    <button onClick={this.onYearBtnClick.bind(this)}>2017</button>
-                    <button onClick={this.onYearBtnClick.bind(this)}>2018</button>
+                    <button onClick={::this.onYearBtnClick}>2016</button>
+                    <button onClick={::this.onYearBtnClick}>2017</button>
+                    <button onClick={::this.onYearBtnClick}>2018</button>
                 </p>
-                <p>У тебя {photos.length} фото за {year} год</p>
+                <h3>{year} год</h3>
+                {
+                    fetching ?
+                        <p>Загрузка</p>
+                        :
+                        <p>У тебя {photos.length} фото</p>
+                }
             </div>
         )
     }
@@ -32,5 +35,5 @@ export default class Page extends Component {
 Page.propTypes = {
     year: PropTypes.number.isRequired,
     photos: PropTypes.array.isRequired,
-    setYear: PropTypes.func.isRequired
+    getPhotos: PropTypes.func.isRequired
 };
