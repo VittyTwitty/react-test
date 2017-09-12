@@ -1,27 +1,50 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Link} from "react-router";
+import 'normalize.css';
+
 import Header from "./containers/Header";
 import Footer from "./containers/Footer";
-
+import {connect} from "react-redux";
+import Page from "./components/Page";
+import User from "./components/User";
+import * as pageActions from './actions/PageActions'
+import {bindActionCreators} from "redux";
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header/>
-        <ul>
-          <li>
-            <Link to='/home'>Home</Link>
-          </li>
-          <li>
-            <Link to='/about'>About</Link>
-          </li>
-        </ul>
-        {this.props.children}
-        <Footer/>
-      </div>
-    );
-  }
+    render() {
+        const {
+            user,
+            page
+        } = this.props;
+        const setYear = this.props.pageActions;
+        console.log(this.props.user);
+        return (
+            <div className="App">
+                <Header
+                    user={user}
+                    page={page}
+                />
+                {this.props.children}
+                <User id={user.id} name={user.name}/>
+                <Page setYear={setYear} year={page.year} photos={page.photos}/>
+                <Footer/>
+            </div>
+        );
+    }
+
+
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        page: state.page
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        pageActions: bindActionCreators(pageActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
